@@ -3,7 +3,7 @@ import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 import { useFormContext, Controller } from "react-hook-form";
 
-const CustomDatePicker = ({ name }) => {
+const CustomDatePicker = ({ name, btnText }) => {
   const { control, setValue } = useFormContext();
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
@@ -28,31 +28,39 @@ const CustomDatePicker = ({ name }) => {
   );
 
   return (
-    <div className="custom-date-picker">
-      <select
-        className="select select-bordered w-full max-w-xs"
-        value={selectedYear}
-        onChange={handleYearChange}
+    <div className="dropdown">
+      <div tabIndex={0} role="button" className="btn m-1">
+        {btnText}
+      </div>
+      <ul
+        tabIndex={0}
+        className="dropdown-content menu bg-base-100 rounded-box z-[1]  p-2 shadow"
       >
-        {years.map((year) => (
-          <option key={year} value={year}>
-            {year}
-          </option>
-        ))}
-      </select>
-      <Controller
-        control={control}
-        name={name}
-        render={({ field }) => (
-          <DayPicker
-            mode="single"
-            selected={field.value}
-            onSelect={(date) => field.onChange(date)}
-            onMonthChange={handleMonthChange}
-            month={new Date(selectedYear, selectedMonth)}
-          />
-        )}
-      />
+        <select
+          className="select select-bordered w-full max-w-xs"
+          value={selectedYear}
+          onChange={handleYearChange}
+        >
+          {years.map((year) => (
+            <option key={year} value={year}>
+              {year}
+            </option>
+          ))}
+        </select>
+        <Controller
+          control={control}
+          name={name}
+          render={({ field }) => (
+            <DayPicker
+              mode="single"
+              selected={field.value}
+              onSelect={(date) => field.onChange(date)}
+              onMonthChange={handleMonthChange}
+              month={new Date(selectedYear, selectedMonth)}
+            />
+          )}
+        />
+      </ul>
     </div>
   );
 };
